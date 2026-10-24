@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Zap, Globe, LayoutGrid, FileText, Loader2, Settings, Share2, Smartphone, Sparkles, X, Mic, Camera, Upload, HardDrive, FileAudio, ArrowLeft, ArrowRight, RotateCcw, History } from "lucide-react";
+import { Zap, Globe, LayoutGrid, FileText, Loader2, Settings, Share2, Smartphone, Sparkles, X, Mic, Camera, Upload, HardDrive, FileAudio, ArrowLeft, ArrowRight, RotateCcw, History, Palette, Sun, Moon } from "lucide-react";
 import { compressImagesInParallel } from "./lib/imageCompressor";
 import { optimizeAudioBlob } from "./lib/audioCompressor";
 import Scanner from "./components/Scanner";
@@ -8,7 +8,7 @@ import VoiceRecorder from "./components/VoiceRecorder";
 import ResultView from "./components/ResultView";
 import LoadingOverlay from "./components/LoadingOverlay";
 
-import SettingsModal from "./components/SettingsModal";
+import SettingsModal, { ColorPalette } from "./components/SettingsModal";
 import QRCodeModal from "./components/QRCodeModal";
 import TermsModal from "./components/TermsModal";
 import OnboardingModal from "./components/OnboardingModal";
@@ -194,15 +194,34 @@ export default function App() {
   });
   const [isBlurred, setIsBlurred] = useState(false);
 
-  // Theme management - Default is "dark" mode as requested
+  // Theme & Color Palette management
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     const saved = localStorage.getItem("abookscan_theme");
     return saved === "light" ? "light" : "dark";
   });
 
+  const [colorPalette, setColorPalette] = useState<ColorPalette>(() => {
+    const saved = localStorage.getItem("abookscan_palette") as ColorPalette | null;
+    if (saved && ["emerald", "amethyst", "sunset", "sapphire"].includes(saved)) {
+      return saved;
+    }
+    return "emerald";
+  });
+
   const handleThemeChange = (newTheme: "dark" | "light") => {
     setTheme(newTheme);
     localStorage.setItem("abookscan_theme", newTheme);
+  };
+
+  const handlePaletteChange = (palette: ColorPalette) => {
+    setColorPalette(palette);
+    localStorage.setItem("abookscan_palette", palette);
+  };
+
+  const cycleNextPalette = () => {
+    const palettes: ColorPalette[] = ["emerald", "amethyst", "sunset", "sapphire"];
+    const nextIdx = (palettes.indexOf(colorPalette) + 1) % palettes.length;
+    handlePaletteChange(palettes[nextIdx]);
   };
 
   useEffect(() => {
@@ -215,6 +234,12 @@ export default function App() {
       root.classList.remove("light");
     }
   }, [theme]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("palette-emerald", "palette-amethyst", "palette-sunset", "palette-sapphire");
+    root.classList.add(`palette-${colorPalette}`);
+  }, [colorPalette]);
 
   const handlePrivateModeChange = (val: boolean) => {
     setIsPrivateMode(val);
@@ -865,7 +890,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-slate-300 font-sans selection:bg-teal-500/30 overflow-x-hidden relative">
+    <div className={`min-h-screen font-sans selection:bg-teal-500/30 overflow-x-hidden relative transition-colors duration-300 ${
+      theme === "light" ? "bg-slate-50 text-slate-800" : "bg-zinc-950 text-slate-300"
+    }`}>
       {/* Privacy Task-Switcher Cover Backdrop */}
       <AnimatePresence>
         {isBlurred && (
@@ -892,19 +919,27 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Cloud-inspired Background System */}
-      <div className="fixed inset-0 z-0 bg-zinc-950 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full tech-grid opacity-10" />
+      {/* Dynamic Ambient Cloud & Aurora Background System */}
+      <div className={`fixed inset-0 z-0 overflow-hidden pointer-events-none transition-colors duration-500 ${
+        theme === "light" ? "bg-slate-50" : "bg-zinc-950"
+      }`}>
+        <div className="absolute top-0 left-0 w-full h-full tech-grid opacity-15" />
         
-        {/* Animated Clouds */}
-        <div className="absolute top-[10%] left-[5%] w-[40%] h-[40%] bg-teal-500/10 cloud-sphere" />
-        <div className="absolute top-[40%] left-[50%] w-[35%] h-[35%] bg-teal-400/5 cloud-sphere" style={{ animationDelay: '-5s' }} />
-        <div className="absolute -bottom-[5%] right-[10%] w-[50%] h-[50%] bg-teal-600/10 cloud-sphere" style={{ animationDelay: '-10s' }} />
-        <div className="absolute top-[60%] left-[10%] w-[30%] h-[30%] bg-zinc-400/5 cloud-sphere" style={{ animationDelay: '-15s' }} />
+        {/* Animated Multicolor Glowing Nebula Spheres */}
+        <div className="absolute top-[8%] left-[5%] w-[45%] h-[45%] cloud-sphere cloud-sphere-1" />
+        <div className="absolute top-[35%] left-[45%] w-[40%] h-[40%] cloud-sphere cloud-sphere-2" style={{ animationDelay: '-6s' }} />
+        <div className="absolute -bottom-[8%] right-[8%] w-[55%] h-[55%] cloud-sphere cloud-sphere-3" style={{ animationDelay: '-12s' }} />
+        <div className="absolute top-[65%] left-[8%] w-[35%] h-[35%] cloud-sphere cloud-sphere-4" style={{ animationDelay: '-18s' }} />
         
         {/* Atmospheric overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-60" />
-        <div className="absolute inset-0 bg-zinc-950/20 backdrop-blur-[2px]" />
+        <div className={`absolute inset-0 transition-opacity duration-500 ${
+          theme === "light" 
+            ? "bg-gradient-to-t from-slate-50 via-slate-50/70 to-transparent opacity-85" 
+            : "bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-75"
+        }`} />
+        <div className={`absolute inset-0 backdrop-blur-[2px] ${
+          theme === "light" ? "bg-white/20" : "bg-zinc-950/20"
+        }`} />
       </div>
 
       <main className="relative z-10 container mx-auto px-6 py-6 min-h-screen flex flex-col">
@@ -916,22 +951,68 @@ export default function App() {
             <div className="fixed top-8 left-0 right-0 px-6 z-30 pointer-events-none">
               <div className="max-w-4xl mx-auto flex items-center gap-4 pointer-events-auto">
                 <div className="flex-1 overflow-x-auto no-scrollbar pb-2">
-                  <div className="flex items-center gap-3 glass-card p-2 rounded-full w-max min-w-full sm:min-w-0">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 shrink-0">
+                  <div className="flex items-center gap-2.5 glass-card p-2 rounded-full w-max min-w-full sm:min-w-0">
+                    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full shrink-0 border ${
+                      theme === "light" 
+                        ? "bg-slate-100 border-slate-300 text-slate-900" 
+                        : "bg-white/5 border-white/10 text-white"
+                    }`}>
                       <AppLogo size="sm" />
-                      <span className="text-[10px] font-bold tracking-widest text-white uppercase">AbookScan</span>
+                      <span className="text-[10px] font-bold tracking-widest uppercase">AbookScan</span>
                     </div>
 
-                    <div className="flex items-center gap-2 px-6 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-[0.3em] bg-teal-500 text-black shadow-[0_0_30px_rgba(20,184,166,0.4)] whitespace-nowrap">
+                    {/* Active Tab */}
+                    <div className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-[0.25em] btn-theme-gradient whitespace-nowrap">
                       <LayoutGrid className="w-3.5 h-3.5" />
                       {t.nav.scanTab}
                     </div>
                     
-                    <div className="h-4 w-[1px] bg-white/20 mx-1" />
+                    <div className={`h-4 w-[1px] mx-0.5 ${theme === "light" ? "bg-slate-300" : "bg-white/20"}`} />
                     
+                    {/* Quick Palette Cycle Switcher Button */}
+                    <button 
+                      onClick={cycleNextPalette}
+                      className={`flex items-center gap-2 px-3.5 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-wider transition-all whitespace-nowrap group ${
+                        theme === "light"
+                          ? "bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 shadow-sm"
+                          : "bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10"
+                      }`}
+                      title={`Palette active : ${colorPalette}. Cliquez pour changer de couleur`}
+                    >
+                      <span className="relative flex h-2 w-2 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-[var(--theme-brand)]" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--theme-brand)]" />
+                      </span>
+                      <Palette className="w-3.5 h-3.5 text-[var(--theme-brand)] group-hover:rotate-45 transition-transform duration-500" />
+                      <span className="capitalize">{colorPalette}</span>
+                    </button>
+
+                    {/* Quick Dark / Light Toggle */}
+                    <button
+                      onClick={() => handleThemeChange(theme === "dark" ? "light" : "dark")}
+                      className={`p-2.5 rounded-full transition-all group ${
+                        theme === "light"
+                          ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 shadow-sm"
+                          : "bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10"
+                      }`}
+                      title={theme === "dark" ? "Passer au Mode Clair" : "Passer au Mode Sombre"}
+                    >
+                      {theme === "dark" ? (
+                        <Sun className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-90 transition-transform" />
+                      ) : (
+                        <Moon className="w-3.5 h-3.5 text-indigo-600 group-hover:-rotate-12 transition-transform" />
+                      )}
+                    </button>
+
+                    <div className={`h-4 w-[1px] mx-0.5 ${theme === "light" ? "bg-slate-300" : "bg-white/20"}`} />
+
                     <button 
                       onClick={() => setIsSettingsOpen(true)}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-widest text-slate-400 hover:text-white transition-all whitespace-nowrap overflow-hidden group relative bg-white/5"
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-widest transition-all whitespace-nowrap overflow-hidden group relative ${
+                        theme === "light"
+                          ? "bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-300"
+                          : "bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10"
+                      }`}
                     >
                       <Settings className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-700" />
                       <span>{t.nav.settings}</span>
@@ -939,36 +1020,36 @@ export default function App() {
 
                     <button 
                       onClick={handleInstallClick}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-widest text-teal-400 hover:text-teal-300 transition-all whitespace-nowrap bg-teal-500/10 border border-teal-500/10 group"
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[10px] uppercase font-bold tracking-widest badge-theme transition-all whitespace-nowrap group"
                     >
                       {showInstallBtn ? (
                         <>
-                          <Smartphone className="w-3.5 h-3.5 animate-pulse text-teal-300" />
+                          <Smartphone className="w-3.5 h-3.5 animate-pulse text-[var(--theme-brand)]" />
                           <span>{t.nav.installApp}</span>
                         </>
                       ) : (
                         <>
-                          <Share2 className="w-3.5 h-3.5 text-teal-400 group-hover:scale-110 transition-transform" />
+                          <Share2 className="w-3.5 h-3.5 text-[var(--theme-brand)] group-hover:scale-110 transition-transform" />
                           <span>{t.nav.installShare}</span>
                         </>
                       )}
                     </button>
 
-                    <div className="h-4 w-[1px] bg-white/20 mx-1" />
+                    <div className={`h-4 w-[1px] mx-0.5 ${theme === "light" ? "bg-slate-300" : "bg-white/20"}`} />
                     
-                    <div className="flex items-center gap-2 px-3.5 py-1.5 bg-teal-500/10 border border-teal-500/20 rounded-full whitespace-nowrap">
-                       <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(45,212,191,0.8)]" />
-                       <span className="text-[8px] font-mono uppercase tracking-widest text-teal-300 font-bold">
+                    <div className="flex items-center gap-2 px-3.5 py-1.5 badge-theme rounded-full whitespace-nowrap">
+                       <div className="w-1.5 h-1.5 rounded-full bg-[var(--theme-brand)] animate-pulse" />
+                       <span className="text-[8px] font-mono uppercase tracking-widest font-bold">
                          Accès Gratuit & Illimité
                        </span>
                     </div>
 
                     {isPrivateMode && (
                       <>
-                        <div className="h-4 w-[1px] bg-white/20 mx-1" />
-                        <div className="flex items-center gap-1.5 px-3 py-2 bg-teal-500/10 border border-teal-500/20 rounded-full whitespace-nowrap">
-                          <div className="w-1 h-1 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(45,212,191,1)]" />
-                          <span className="text-[7px] font-mono uppercase tracking-widest text-teal-400 font-bold">
+                        <div className={`h-4 w-[1px] mx-0.5 ${theme === "light" ? "bg-slate-300" : "bg-white/20"}`} />
+                        <div className="flex items-center gap-1.5 px-3 py-2 badge-theme rounded-full whitespace-nowrap">
+                          <div className="w-1 h-1 rounded-full bg-[var(--theme-brand)] animate-pulse" />
+                          <span className="text-[7px] font-mono uppercase tracking-widest font-bold">
                             {t.nav.privateMode}
                           </span>
                         </div>
@@ -1036,15 +1117,22 @@ export default function App() {
                   onClick={() => setIsSettingsOpen(true)}
                   title="AbookScan IA"
                 >
-                  <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-3xl blur-md opacity-40 group-hover:opacity-75 transition-opacity" />
+                  <div 
+                    className="absolute -inset-1.5 rounded-3xl blur-md opacity-60 group-hover:opacity-100 transition-opacity" 
+                    style={{ background: "var(--theme-gradient)" }}
+                  />
                   <AppLogo size="hero" />
                 </motion.div>
 
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight flex items-center justify-center gap-2">
-                    AbookScan <span className="text-teal-400">IA</span>
+                  <h1 className={`text-2xl sm:text-3xl font-display font-bold tracking-tight flex items-center justify-center gap-2 ${
+                    theme === "light" ? "text-slate-900" : "text-white"
+                  }`}>
+                    AbookScan <span className="text-theme-gradient">IA</span>
                   </h1>
-                  <p className="text-xs text-slate-400 font-mono mt-1 max-w-sm mx-auto">
+                  <p className={`text-xs font-mono mt-1 max-w-sm mx-auto ${
+                    theme === "light" ? "text-slate-600" : "text-slate-400"
+                  }`}>
                     {t.hero.subtitle}
                   </p>
                 </div>
@@ -1055,10 +1143,12 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("ocr")}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-wider transition-all ${
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
                     activeTab === "ocr"
-                      ? "bg-teal-500 text-black shadow-[0_0_20px_rgba(20,184,166,0.4)] scale-105"
-                      : "bg-zinc-900/90 text-slate-400 hover:text-white border border-white/10"
+                      ? "btn-theme-gradient scale-105"
+                      : theme === "light"
+                        ? "bg-white text-slate-700 hover:text-slate-900 border border-slate-300 shadow-sm"
+                        : "bg-zinc-900/90 text-slate-400 hover:text-white border border-white/10"
                   }`}
                 >
                   <Camera className="w-4 h-4" />
@@ -1068,37 +1158,39 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("voice")}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-wider transition-all ${
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer ${
                     activeTab === "voice"
-                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] scale-105"
-                      : "bg-zinc-900/90 text-slate-400 hover:text-white border border-white/10"
+                      ? "bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white shadow-[0_0_24px_rgba(168,85,247,0.5)] scale-105"
+                      : theme === "light"
+                        ? "bg-white text-slate-700 hover:text-slate-900 border border-slate-300 shadow-sm"
+                        : "bg-zinc-900/90 text-slate-400 hover:text-white border border-white/10"
                   }`}
                 >
-                  <Mic className="w-4 h-4 text-indigo-400 animate-pulse" />
+                  <Mic className="w-4 h-4 text-purple-300 animate-pulse" />
                   <span>{t.hero.voiceTitle}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => directFileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-wider transition-all bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500 hover:text-black shadow-lg shadow-emerald-500/10 scale-100 hover:scale-105 cursor-pointer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-wider transition-all bg-gradient-to-r from-emerald-500/15 to-teal-500/15 border border-emerald-500/35 text-emerald-600 dark:text-emerald-300 hover:from-emerald-500 hover:to-teal-500 hover:text-black shadow-lg shadow-emerald-500/10 scale-100 hover:scale-105 cursor-pointer"
                 >
-                  <HardDrive className="w-4 h-4 text-emerald-400" />
+                  <HardDrive className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                   <span>{t.hero.uploadTitle}</span>
                 </button>
               </div>
 
               {activeTab === "ocr" && (
-                <div className="max-w-md mx-auto p-3 bg-teal-500/10 border border-teal-500/30 rounded-2xl text-teal-300 text-xs text-center flex items-center justify-center gap-2">
-                  <Sparkles className="w-4 h-4 text-teal-400 shrink-0" />
-                  <span>{t.hero.ocrDesc}</span>
+                <div className="max-w-md mx-auto p-3 badge-theme rounded-2xl text-xs text-center flex items-center justify-center gap-2 shadow-sm">
+                  <Sparkles className="w-4 h-4 text-[var(--theme-brand)] shrink-0" />
+                  <span className="font-medium">{t.hero.ocrDesc}</span>
                 </div>
               )}
 
               {activeTab === "voice" && (
-                <div className="max-w-md mx-auto p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl text-indigo-300 text-xs text-center flex items-center justify-center gap-2">
-                  <Mic className="w-4 h-4 text-indigo-400 shrink-0" />
-                  <span>{t.hero.voiceDesc}</span>
+                <div className="max-w-md mx-auto p-3 bg-purple-500/10 border border-purple-500/30 text-purple-700 dark:text-purple-300 rounded-2xl text-xs text-center flex items-center justify-center gap-2 shadow-sm">
+                  <Mic className="w-4 h-4 text-purple-500 dark:text-purple-400 shrink-0" />
+                  <span className="font-medium">{t.hero.voiceDesc}</span>
                 </div>
               )}
 
@@ -1169,6 +1261,8 @@ export default function App() {
           onScreenProtectChange={handleScreenProtectChange}
           theme={theme}
           onThemeChange={handleThemeChange}
+          colorPalette={colorPalette}
+          onColorPaletteChange={handlePaletteChange}
           onOpenAdminStats={() => setIsAdminDashboardOpen(true)}
           onOpenTwaGuide={() => {
             setQrModalTab("twa");

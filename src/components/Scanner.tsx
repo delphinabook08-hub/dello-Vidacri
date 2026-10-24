@@ -563,12 +563,12 @@ export default function Scanner({ onImagesCaptured, onMultimodalCaptured, onText
           <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-teal-500/30 group-hover:border-teal-500 transition-colors" />
           
           <div className="absolute inset-0 bg-teal-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-3 rounded-lg bg-zinc-950/80 border border-white/5 group-hover:border-teal-500 group-hover:text-teal-400 text-slate-500 transition-all shadow-2xl relative z-10">
+          <div className="p-3 rounded-lg bg-slate-100 dark:bg-zinc-950/80 border border-slate-200 dark:border-white/5 group-hover:border-[var(--theme-brand)] group-hover:text-[var(--theme-brand)] text-slate-500 transition-all shadow-2xl relative z-10">
             <Camera className="w-6 h-6" />
           </div>
           <div className="text-center relative z-10 space-y-1">
-            <span className="block font-display text-lg text-white tracking-tight">{t.scanner.startCamera}</span>
-            <span className="inline-block px-2 py-0.5 rounded-full text-[7px] font-mono uppercase tracking-[0.2em] border bg-teal-500/10 text-teal-400 border-teal-500/20">
+            <span className="block font-display text-lg text-slate-900 dark:text-white tracking-tight">{t.scanner.startCamera}</span>
+            <span className="inline-block px-2 py-0.5 rounded-full text-[7px] font-mono uppercase tracking-[0.2em] badge-theme">
               HTML5
             </span>
           </div>
@@ -576,23 +576,23 @@ export default function Scanner({ onImagesCaptured, onMultimodalCaptured, onText
 
         {/* Native mobile camera fallback for older or restricted Android devices */}
         <motion.button
-          whileHover={{ scale: 1.01, borderColor: "rgba(20, 184, 166, 0.4)" }}
+          whileHover={{ scale: 1.01, borderColor: "var(--theme-border-color)" }}
           whileTap={{ scale: 0.99 }}
           onClick={triggerNativeCapture}
           className="flex flex-col items-center justify-center p-6 glass-card rounded-xl gap-3 group transition-all relative overflow-hidden tech-grid scanner-effect text-left h-full w-full"
         >
-          <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-teal-500/30 group-hover:border-teal-500 transition-colors" />
-          <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-teal-500/30 group-hover:border-teal-500 transition-colors" />
-          <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-teal-500/30 group-hover:border-teal-500 transition-colors" />
-          <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-teal-500/30 group-hover:border-teal-500 transition-colors" />
+          <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-teal-500/30 group-hover:border-[var(--theme-brand)] transition-colors" />
+          <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-teal-500/30 group-hover:border-[var(--theme-brand)] transition-colors" />
+          <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-teal-500/30 group-hover:border-[var(--theme-brand)] transition-colors" />
+          <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-teal-500/30 group-hover:border-[var(--theme-brand)] transition-colors" />
           
           <div className="absolute inset-0 bg-teal-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-3 rounded-lg bg-zinc-950/80 border border-white/5 group-hover:border-teal-500 group-hover:text-teal-400 text-slate-500 transition-all shadow-2xl relative z-10">
+          <div className="p-3 rounded-lg bg-slate-100 dark:bg-zinc-950/80 border border-slate-200 dark:border-white/5 group-hover:border-[var(--theme-brand)] group-hover:text-[var(--theme-brand)] text-slate-500 transition-all shadow-2xl relative z-10">
             <Smartphone className="w-6 h-6" />
           </div>
           <div className="text-center relative z-10 space-y-1">
-            <span className="block font-display text-lg text-white tracking-tight">{t.scanner.takePhoto}</span>
-            <span className="inline-block px-2 py-0.5 rounded-full text-[7px] font-mono uppercase tracking-[0.2em] border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+            <span className="block font-display text-lg text-slate-900 dark:text-white tracking-tight">{t.scanner.takePhoto}</span>
+            <span className="inline-block px-2 py-0.5 rounded-full text-[7px] font-mono uppercase tracking-[0.2em] border bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
               100%
             </span>
           </div>
@@ -612,20 +612,20 @@ export default function Scanner({ onImagesCaptured, onMultimodalCaptured, onText
               processAndSubmitFiles(Array.from(e.dataTransfer.files));
             }
           }}
-          className="relative group cursor-pointer rounded-xl border border-white/5 hover:border-teal-500/50 hover:bg-teal-950/20 transition-all p-6 flex flex-col items-center justify-center gap-3 glass-card overflow-hidden tech-grid h-full"
+          className="relative group cursor-pointer rounded-xl border border-slate-200 dark:border-white/5 hover:border-[var(--theme-brand)] hover:bg-teal-950/20 transition-all p-6 flex flex-col items-center justify-center gap-3 glass-card overflow-hidden tech-grid h-full"
         >
-          <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-white/10 group-hover:border-teal-500/50 transition-colors" />
-          <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-white/10 group-hover:border-teal-500/50 transition-colors" />
-          <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-white/10 group-hover:border-teal-500/50 transition-colors" />
-          <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-white/10 group-hover:border-teal-500/50 transition-colors" />
+          <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-slate-300 dark:border-white/10 group-hover:border-[var(--theme-brand)] transition-colors" />
+          <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-slate-300 dark:border-white/10 group-hover:border-[var(--theme-brand)] transition-colors" />
+          <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-slate-300 dark:border-white/10 group-hover:border-[var(--theme-brand)] transition-colors" />
+          <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-slate-300 dark:border-white/10 group-hover:border-[var(--theme-brand)] transition-colors" />
 
           <div className="absolute inset-0 bg-teal-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="p-3 rounded-lg bg-zinc-950/80 border border-white/5 group-hover:border-teal-500/40 text-slate-500 group-hover:text-teal-400 transition-all shadow-2xl relative z-10">
+          <div className="p-3 rounded-lg bg-slate-100 dark:bg-zinc-950/80 border border-slate-200 dark:border-white/5 group-hover:border-[var(--theme-brand)] text-slate-500 group-hover:text-[var(--theme-brand)] transition-all shadow-2xl relative z-10">
             <Upload className="w-6 h-6" />
           </div>
           <div className="text-center relative z-10 space-y-1">
-            <span className="block font-display text-lg text-white tracking-tight">{t.scanner.choosePhotos}</span>
-            <span className="inline-block px-2 py-0.5 rounded-full bg-white/5 text-[7px] text-slate-400 font-mono uppercase tracking-[0.2em] border border-white/10 group-hover:text-teal-300 group-hover:border-teal-500/30">
+            <span className="block font-display text-lg text-slate-900 dark:text-white tracking-tight">{t.scanner.choosePhotos}</span>
+            <span className="inline-block px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-[7px] text-slate-600 dark:text-slate-400 font-mono uppercase tracking-[0.2em] border border-slate-200 dark:border-white/10 group-hover:text-[var(--theme-brand)]">
               {t.scanner.gallery} & {t.scanner.pdfDoc}
             </span>
           </div>

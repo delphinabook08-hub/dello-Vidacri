@@ -5,6 +5,8 @@ import { getTranslations } from "../lib/translations";
 import { CURRENT_APP_VERSION, checkAppVersion, forceUpdateAndReload } from "../lib/versionManager";
 import { AppLogo } from "./AppLogo";
 
+export type ColorPalette = "emerald" | "amethyst" | "sunset" | "sapphire";
+
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -20,6 +22,8 @@ interface SettingsModalProps {
   onScreenProtectChange: (val: boolean) => void;
   theme?: "dark" | "light";
   onThemeChange?: (theme: "dark" | "light") => void;
+  colorPalette?: ColorPalette;
+  onColorPaletteChange?: (palette: ColorPalette) => void;
   onOpenAdminStats?: () => void;
   onOpenTwaGuide?: () => void;
 }
@@ -39,6 +43,8 @@ export default function SettingsModal({
   onScreenProtectChange,
   theme = "dark",
   onThemeChange,
+  colorPalette = "emerald",
+  onColorPaletteChange,
   onOpenAdminStats,
   onOpenTwaGuide
 }: SettingsModalProps) {
@@ -153,14 +159,18 @@ export default function SettingsModal({
             <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
               {activeTab === "general" ? (
                 <>
-                  {/* Theme Switcher / Mode Visuel */}
-                  <div className="space-y-3">
+                  {/* Theme Switcher / Mode Visuel & Color Palettes */}
+                  <div className="space-y-4">
                     <label className="text-[10px] uppercase tracking-widest text-teal-600 dark:text-teal-400 font-bold block flex items-center justify-between">
                       <span className="flex items-center gap-1.5">
-                        <Palette className="w-3.5 h-3.5" /> {t.settings.visualTheme}
+                        <Palette className="w-3.5 h-3.5" /> Thème & Palette de Couleurs
+                      </span>
+                      <span className="text-[9px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/5 border border-white/10 uppercase">
+                        {colorPalette}
                       </span>
                     </label>
 
+                    {/* Dark vs Light Mode Toggle */}
                     <div className={`grid grid-cols-2 gap-2.5 p-1.5 rounded-2xl border ${
                       theme === "light"
                         ? "bg-slate-100 border-slate-200/80"
@@ -191,6 +201,83 @@ export default function SettingsModal({
                         <Sun className={`w-4 h-4 ${theme === "light" ? "text-amber-500 fill-amber-500/20" : "text-slate-400"}`} />
                         <span>{t.settings.lightTheme}</span>
                       </button>
+                    </div>
+
+                    {/* 4 Color Palette Cards */}
+                    <div className="grid grid-cols-2 gap-2.5 pt-1">
+                      {[
+                        {
+                          id: "emerald" as const,
+                          name: "Émeraude & Cyan",
+                          tag: "Laser Tech",
+                          gradient: "from-emerald-400 via-teal-400 to-cyan-400",
+                          dotBg: "bg-teal-400",
+                          borderAccent: "border-teal-500 ring-teal-500/25",
+                        },
+                        {
+                          id: "amethyst" as const,
+                          name: "Cyber Améthyste",
+                          tag: "Néon & Violet",
+                          gradient: "from-violet-400 via-purple-400 to-pink-500",
+                          dotBg: "bg-purple-400",
+                          borderAccent: "border-purple-500 ring-purple-500/25",
+                        },
+                        {
+                          id: "sunset" as const,
+                          name: "Sunset Impérial",
+                          tag: "Or & Ambre",
+                          gradient: "from-amber-400 via-orange-400 to-rose-500",
+                          dotBg: "bg-amber-400",
+                          borderAccent: "border-amber-500 ring-amber-500/25",
+                        },
+                        {
+                          id: "sapphire" as const,
+                          name: "Saphir Royal",
+                          tag: "Azur Cobalt",
+                          gradient: "from-blue-500 via-indigo-500 to-cyan-400",
+                          dotBg: "bg-blue-400",
+                          borderAccent: "border-blue-500 ring-blue-500/25",
+                        },
+                      ].map((item) => {
+                        const isSelected = colorPalette === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => onColorPaletteChange && onColorPaletteChange(item.id)}
+                            className={`p-3 rounded-2xl border text-left transition-all relative overflow-hidden group flex flex-col justify-between h-20 ${
+                              isSelected
+                                ? theme === "light"
+                                  ? `bg-white shadow-lg ${item.borderAccent} border-2 ring-2`
+                                  : `bg-white/10 shadow-lg ${item.borderAccent} border-2 ring-2`
+                                : theme === "light"
+                                  ? "bg-slate-50 border-slate-200 hover:border-slate-300"
+                                  : "bg-black/30 border-white/5 hover:border-white/15"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-[8px] font-mono uppercase tracking-widest text-slate-400 font-semibold">
+                                {item.tag}
+                              </span>
+                              {isSelected ? (
+                                <CheckCircle2 className="w-3.5 h-3.5 text-teal-500 dark:text-teal-400" />
+                              ) : (
+                                <div className={`w-2.5 h-2.5 rounded-full ${item.dotBg} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                              )}
+                            </div>
+
+                            <div className="space-y-1">
+                              <span className={`text-[11px] font-bold block truncate ${
+                                theme === "light" ? "text-slate-900" : "text-white"
+                              }`}>
+                                {item.name}
+                              </span>
+                              {/* Vivid color gradient preview bar */}
+                              <div className={`h-1.5 w-full rounded-full bg-gradient-to-r ${item.gradient} shadow-sm`} />
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 

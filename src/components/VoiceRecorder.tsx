@@ -645,24 +645,24 @@ export default function VoiceRecorder({ onAudioCaptured, onDirectTextCaptured, s
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-6">
-      <div className="bg-slate-900/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-indigo-500/30 shadow-2xl space-y-6">
+      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-indigo-500/30 shadow-2xl space-y-6">
         
         {/* Source Toggle Tabs: 1. Dictée Solo, 2. Téléverser Audio, 3. Mode Réunion */}
-        <div className="space-y-4 border-b border-slate-800 pb-5">
+        <div className="space-y-4 border-b border-slate-200 dark:border-slate-800 pb-5">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-xl shadow-indigo-500/20">
               {activeSourceMode === "record" ? <Mic className="w-6 h-6" /> : activeSourceMode === "upload" ? <Upload className="w-6 h-6" /> : <Users className="w-6 h-6" />}
             </div>
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 {activeSourceMode === "record" && "1. Enregistrement Direct (Dictée Solo)"}
                 {activeSourceMode === "upload" && "2. Téléversement de Fichiers Audio HD"}
                 {activeSourceMode === "meeting" && "3. Mode Réunion & Conférence (Échanges & Paragraphes)"}
-                <span className="px-2 py-0.5 text-[10px] uppercase font-bold bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30">
+                <span className="px-2 py-0.5 text-[10px] uppercase font-bold bg-indigo-500/20 text-indigo-500 dark:text-indigo-300 rounded-full border border-indigo-500/30">
                   Gemini IA
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {activeSourceMode === "record" && `Dictée en direct individuelle avec capture sonore haute fidélité en ${selectedLanguage}.`}
                 {activeSourceMode === "upload" && `Importation de fichiers enregistrés (MP3, WAV, M4A, AAC, OGG...) jusqu'à 100 Mo.`}
                 {activeSourceMode === "meeting" && `Transcription en direct avec création automatique de paragraphes à chaque pause et échange entre intervenants.`}
@@ -670,7 +670,7 @@ export default function VoiceRecorder({ onAudioCaptured, onDirectTextCaptured, s
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 p-1.5 bg-slate-950/90 rounded-2xl border border-white/10 gap-1.5 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-3 p-1.5 bg-slate-100 dark:bg-slate-950/90 rounded-2xl border border-slate-200 dark:border-white/10 gap-1.5 w-full">
             <button
               type="button"
               onClick={() => {
@@ -732,7 +732,7 @@ export default function VoiceRecorder({ onAudioCaptured, onDirectTextCaptured, s
 
         {/* MODE 1: Direct Microphone Dictation */}
         {activeSourceMode === "record" && (
-          <div className="flex flex-col items-center justify-center py-8 space-y-6 bg-slate-950/60 rounded-2xl border border-slate-800 p-6 relative overflow-hidden">
+          <div className="flex flex-col items-center justify-center py-8 space-y-6 bg-slate-100/70 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 relative overflow-hidden">
             {isRecording && !isPaused && (
               <div className="absolute inset-0 bg-indigo-600/10 animate-pulse pointer-events-none" />
             )}

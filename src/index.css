@@ -15,48 +15,147 @@
 
   @keyframes cloud-drift {
     0% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(50px, 50px) scale(1.2); }
-    66% { transform: translate(-30px, 70px) scale(0.8); }
+    33% { transform: translate(40px, 40px) scale(1.15); }
+    66% { transform: translate(-30px, 50px) scale(0.9); }
     100% { transform: translate(0, 0) scale(1); }
   }
 }
 
+/* ==========================================================================
+   COLOR PALETTES SYSTEM (Variables & Theming)
+   ========================================================================== */
+
+/* 1. Emerald & Cyan Laser (Default) */
+:root, html.palette-emerald {
+  --theme-brand: #14b8a6;
+  --theme-brand-light: #2dd4bf;
+  --theme-brand-dark: #0d9488;
+  --theme-gradient: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
+  --theme-gradient-hover: linear-gradient(135deg, #34d399 0%, #2dd4bf 50%, #22d3ee 100%);
+  --theme-glow: rgba(20, 184, 166, 0.45);
+  --theme-glow-soft: rgba(20, 184, 166, 0.15);
+  --theme-glow-intense: rgba(45, 212, 191, 0.65);
+  --theme-border-color: rgba(20, 184, 166, 0.35);
+  --theme-pill-bg: rgba(20, 184, 166, 0.12);
+  --theme-pill-text: #2dd4bf;
+  --cloud-1: rgba(16, 185, 129, 0.18);
+  --cloud-2: rgba(6, 182, 212, 0.14);
+  --cloud-3: rgba(20, 184, 166, 0.20);
+  --cloud-4: rgba(52, 211, 153, 0.10);
+  --scanner-beam: #14b8a6;
+}
+
+/* 2. Cyber Amethyst & Neon Violet */
+html.palette-amethyst {
+  --theme-brand: #a855f7;
+  --theme-brand-light: #c084fc;
+  --theme-brand-dark: #7e22ce;
+  --theme-gradient: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+  --theme-gradient-hover: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #f472b6 100%);
+  --theme-glow: rgba(168, 85, 247, 0.45);
+  --theme-glow-soft: rgba(168, 85, 247, 0.15);
+  --theme-glow-intense: rgba(192, 132, 252, 0.65);
+  --theme-border-color: rgba(168, 85, 247, 0.35);
+  --theme-pill-bg: rgba(168, 85, 247, 0.14);
+  --theme-pill-text: #c084fc;
+  --cloud-1: rgba(139, 92, 246, 0.20);
+  --cloud-2: rgba(236, 72, 153, 0.16);
+  --cloud-3: rgba(168, 85, 247, 0.22);
+  --cloud-4: rgba(192, 132, 252, 0.12);
+  --scanner-beam: #a855f7;
+}
+
+/* 3. Solar Gold & Sunset Imperial */
+html.palette-sunset {
+  --theme-brand: #f59e0b;
+  --theme-brand-light: #fbbf24;
+  --theme-brand-dark: #b45309;
+  --theme-gradient: linear-gradient(135deg, #f59e0b 0%, #f97316 50%, #ef4444 100%);
+  --theme-gradient-hover: linear-gradient(135deg, #fbbf24 0%, #fb923c 50%, #f87171 100%);
+  --theme-glow: rgba(245, 158, 11, 0.45);
+  --theme-glow-soft: rgba(245, 158, 11, 0.15);
+  --theme-glow-intense: rgba(251, 191, 36, 0.65);
+  --theme-border-color: rgba(245, 158, 11, 0.35);
+  --theme-pill-bg: rgba(245, 158, 11, 0.14);
+  --theme-pill-text: #fbbf24;
+  --cloud-1: rgba(245, 158, 11, 0.20);
+  --cloud-2: rgba(249, 115, 22, 0.18);
+  --cloud-3: rgba(239, 68, 68, 0.16);
+  --cloud-4: rgba(251, 191, 36, 0.12);
+  --scanner-beam: #f59e0b;
+}
+
+/* 4. Sapphire Royal & Azure Blue */
+html.palette-sapphire {
+  --theme-brand: #3b82f6;
+  --theme-brand-light: #60a5fa;
+  --theme-brand-dark: #1d4ed8;
+  --theme-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #06b6d4 100%);
+  --theme-gradient-hover: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #22d3ee 100%);
+  --theme-glow: rgba(59, 130, 246, 0.45);
+  --theme-glow-soft: rgba(59, 130, 246, 0.15);
+  --theme-glow-intense: rgba(96, 165, 250, 0.65);
+  --theme-border-color: rgba(59, 130, 246, 0.35);
+  --theme-pill-bg: rgba(59, 130, 246, 0.14);
+  --theme-pill-text: #60a5fa;
+  --cloud-1: rgba(37, 99, 235, 0.20);
+  --cloud-2: rgba(6, 182, 212, 0.16);
+  --cloud-3: rgba(59, 130, 246, 0.22);
+  --cloud-4: rgba(96, 165, 250, 0.12);
+  --scanner-beam: #3b82f6;
+}
+
+/* Ambient Cloud Spheres */
 .cloud-sphere {
   border-radius: 50%;
-  filter: blur(60px);
+  filter: blur(65px);
   will-change: transform;
   transform: translate3d(0, 0, 0);
   pointer-events: none;
+  animation: cloud-drift 24s ease-in-out infinite alternate;
 }
 
+.cloud-sphere-1 { background-color: var(--cloud-1); }
+.cloud-sphere-2 { background-color: var(--cloud-2); }
+.cloud-sphere-3 { background-color: var(--cloud-3); }
+.cloud-sphere-4 { background-color: var(--cloud-4); }
 
 @layer base {
   body {
-    @apply bg-zinc-950 text-slate-100 antialiased selection:bg-teal-500/30 transition-colors duration-200;
+    @apply bg-zinc-950 text-slate-100 antialiased selection:bg-teal-500/30 transition-colors duration-300;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(172, 70%, 50%, 0.12) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(172, 70%, 50%, 0.08) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, var(--theme-glow-soft) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, var(--theme-glow-soft) 0px, transparent 55%);
   }
 
   html.light body {
-    @apply bg-slate-100 text-slate-900 selection:bg-teal-500/20;
+    @apply bg-slate-50 text-slate-900 selection:bg-teal-500/20;
     background-image: 
-      radial-gradient(at 0% 0%, hsla(172, 70%, 50%, 0.12) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(172, 70%, 50%, 0.06) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, var(--theme-glow-soft) 0px, transparent 60%),
+      radial-gradient(at 100% 100%, var(--theme-glow-soft) 0px, transparent 60%),
+      radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.7) 0px, transparent 100%);
   }
 }
 
 .aurora-glow {
-  background: radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, var(--theme-glow-soft) 0%, transparent 70%);
   filter: blur(100px);
 }
 
 .glass-card {
-  @apply bg-white/[0.04] backdrop-blur-2xl border border-white/10 shadow-2xl;
+  @apply bg-white/[0.04] backdrop-blur-2xl border border-white/10 shadow-2xl transition-all duration-300;
+}
+
+.glass-card:hover {
+  border-color: var(--theme-border-color);
 }
 
 html.light .glass-card {
-  @apply bg-white/90 backdrop-blur-2xl border border-slate-200/90 shadow-xl shadow-slate-300/40 text-slate-900;
+  @apply bg-white/95 backdrop-blur-2xl border border-slate-200/90 shadow-xl shadow-slate-200/60 text-slate-900;
+}
+
+html.light .glass-card:hover {
+  border-color: var(--theme-brand);
 }
 
 .tech-grid {
@@ -65,7 +164,7 @@ html.light .glass-card {
 }
 
 html.light .tech-grid {
-  background-image: radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.08) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.07) 1px, transparent 0);
 }
 
 @keyframes scanner-line {
@@ -81,13 +180,51 @@ html.light .tech-grid {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #14b8a6, transparent);
-  box-shadow: 0 0 15px #14b8a6;
+  background: linear-gradient(90deg, transparent, var(--scanner-beam), transparent);
+  box-shadow: 0 0 16px var(--scanner-beam);
   animation: scanner-line 3s linear infinite;
 }
 
+/* Custom Themed Buttons and Badges */
+.btn-theme-gradient {
+  background: var(--theme-gradient);
+  color: #000000;
+  box-shadow: 0 4px 20px var(--theme-glow);
+  transition: all 0.25s ease;
+}
+
+.btn-theme-gradient:hover {
+  background: var(--theme-gradient-hover);
+  box-shadow: 0 6px 26px var(--theme-glow-intense);
+  transform: translateY(-1px);
+}
+
+.badge-theme {
+  background-color: var(--theme-pill-bg);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-pill-text);
+}
+
+html.light .badge-theme {
+  background-color: var(--theme-pill-bg);
+  border: 1px solid var(--theme-brand);
+  color: var(--theme-brand-dark);
+}
+
+.text-theme-gradient {
+  background: var(--theme-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-theme-glow {
+  border-color: var(--theme-border-color);
+  box-shadow: 0 0 15px var(--theme-glow-soft);
+}
+
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
+  height: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -95,12 +232,12 @@ html.light .tech-grid {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(20, 184, 166, 0.2);
+  background: var(--theme-glow-soft);
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(20, 184, 166, 0.4);
+  background: var(--theme-glow);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -111,4 +248,3 @@ html.light .tech-grid {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
