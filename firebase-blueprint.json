@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "AnalyticsStats": {
+      "title": "AnalyticsStats",
+      "description": "Global statistics counter for application usage",
+      "type": "object",
+      "properties": {
+        "totalUsers": { "type": "number", "description": "Total unique users" },
+        "totalScans": { "type": "number", "description": "Total OCR scans executed" },
+        "totalVoiceTranscriptions": { "type": "number", "description": "Total voice recordings transcribed" },
+        "totalExports": { "type": "number", "description": "Total exports generated" },
+        "lastUpdated": { "type": "string", "format": "date-time", "description": "Timestamp of last counter update" }
+      },
+      "required": ["totalUsers"]
+    },
+    "UserSession": {
+      "title": "UserSession",
+      "description": "Individual client session metadata for analytics",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Unique identifier of the user/session" },
+        "firstSeen": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "lastSeen": { "type": "string", "format": "date-time", "description": "Last activity timestamp" },
+        "platform": { "type": "string", "description": "Operating system and device family" },
+        "language": { "type": "string", "description": "Active UI language code" },
+        "screenResolution": { "type": "string", "description": "Screen dimensions" },
+        "totalVisits": { "type": "number", "description": "Session visit count" },
+        "totalScans": { "type": "number", "description": "Total scans performed by this user" },
+        "totalVoice": { "type": "number", "description": "Total voice transcriptions by this user" },
+        "isPWA": { "type": "boolean", "description": "Whether app is running as installed PWA" },
+        "userAgent": { "type": "string", "description": "Browser user agent string" }
+      },
+      "required": ["userId", "platform", "totalVisits"]
+    }
+  },
+  "firestore": {
+    "/analytics_stats/{statId}": {
+      "schema": "AnalyticsStats",
+      "description": "Global usage counters collection"
+    },
+    "/analytics_users/{userId}": {
+      "schema": "UserSession",
+      "description": "User profile and session activity records"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.abookscan.dello.it",
+      "sha256_cert_fingerprints": [
+        "C5:21:49:10:97:74:D9:3A:94:CE:00:FF:6A:B9:56:06:95:57:43:AF:33:04:1E:EA:34:CD:D7:E0:4F:9C:23:4E",
+        "E6:4D:B7:2C:19:93:1A:1D:C4:6E:BF:18:24:D9:D2:C0:B5:E5:A9:7B:8A:2F:E9:CE:22:9E:C0:2F:23:DA:AA:22"
+      ]
+    }
+  }
+]

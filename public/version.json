@@ -1,0 +1,14 @@
+{
+  "version": "2.4.0",
+  "buildTime": 1770984125000,
+  "minSupportedVersion": "2.4.0",
+  "forceUpdate": true,
+  "releaseDate": "2026-08-13",
+  "title": "Nouvelle version AbookScan IA disponible",
+  "message": "Une nouvelle version d'AbookScan IA a été publiée sur Netlify. Pour continuer à bénéficier des services IA, de la sécurité et des dernières fonctionnalités, veuillez recharger l'application.",
+  "features": [
+    "Amélioration des modèles d'analyse IA et de dictée",
+    "Optimisation de la vitesse et de la stabilité",
+    "Prise en charge hors-ligne et synchronisation améliorée"
+  ]
+}

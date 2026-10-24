@@ -1,0 +1,44 @@
+{
+  "packageId": "com.abookscan.dello.it",
+  "host": "ais-pre-u6f2pqalbn53p575yrzwex-183694091937.europe-west2.run.app",
+  "name": "AbookScan IA",
+  "launcherName": "AbookScan",
+  "display": "standalone",
+  "themeColor": "#0A0A0C",
+  "navigationColor": "#0A0A0C",
+  "backgroundColor": "#0A0A0C",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "/icon.png",
+  "maskableIconUrl": "/icon-maskable.png",
+  "splashScreenFadeOutDuration": 300,
+  "appVersionCode": 1,
+  "appVersionName": "1.0.0",
+  "shortcuts": [
+    {
+      "name": "Scanner Document",
+      "shortName": "Scanner",
+      "url": "/?tab=ocr",
+      "icon": "/icon-192.png"
+    },
+    {
+      "name": "Dictée Vocale",
+      "shortName": "Dictée",
+      "url": "/?tab=voice",
+      "icon": "/icon-192.png"
+    }
+  ],
+  "webManifestUrl": "/manifest.json",
+  "generator": "bubblewrap-twa",
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  }
+}

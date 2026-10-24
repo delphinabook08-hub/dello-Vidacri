@@ -1,0 +1,11 @@
+{
+  "name": "Remix AbookScan IA",
+  "description": "Scanner professionnel haute précision avec transcription intelligente pour documents et manuscrits.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
